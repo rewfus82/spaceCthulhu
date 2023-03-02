@@ -27,6 +27,8 @@ public class AiNPCModel {
     public AiNPCModel(String aiNPCName, int aiNPCID) {
         this.aiNPCName = aiNPCName;
         this.aiNPCID = aiNPCID;
+        this.setAiNPCStats(50, 50, 50, 50);
+
     }
 
 // Constructor with name, ID, and role
@@ -35,6 +37,7 @@ public class AiNPCModel {
         this.aiNPCName = aiNPCName;
         this.aiNPCID = aiNPCID;
         this.aiNPCRole = aiNPCRole;
+        this.setAiNPCStats(50, 50, 50, 50);
     }
 
 // Constructor with name, ID, role, and stats
@@ -43,10 +46,8 @@ public class AiNPCModel {
         this.aiNPCName = aiNPCName;
         this.aiNPCID = aiNPCID;
         this.aiNPCRole = aiNPCRole;
-        this.aiNPCFCT = aiNPCFCT;
-        this.aiNPCADP = aiNPCADP;
-        this.aiNPCAGL = aiNPCAGL;
-        this.aiNPCCOM = aiNPCCOM;
+        this.setAiNPCStats(aiNPCFCT, aiNPCADP, aiNPCAGL, aiNPCCOM);
+
     }
 
     
@@ -95,22 +96,58 @@ public class AiNPCModel {
     public void setAiNPCRole(EnumBody.aiNPC aiNPCRole) {
         this.aiNPCRole = aiNPCRole;
     }
-
-    public void setAiNPCFCT(int aiNPCFCT) {
-        this.aiNPCFCT = aiNPCFCT;
+    
+// a function that sets the AI NPC stat FCT to the value passed in the parameter, but only if it is between 10 and 90
+    public void setStatFCT(int aiNPCFCT) {
+        try {
+            this.aiNPCFCT = Math.min(Math.max(aiNPCFCT, 10), 90);
+        } catch (Exception e) {
+            System.out.println("Error setting AI NPC FCT: " + e.getMessage());
+        }
     }
 
-    public void setAiNPCADP(int aiNPCADP) {
-        this.aiNPCADP = aiNPCADP;
+// a function that sets the AI NPC stat ADP to the value passed in the parameter, but only if it is between 10 and 90
+    public void setStatADP(int aiNPCADP) {
+        try {
+            this.aiNPCADP = Math.min(Math.max(aiNPCADP, 10), 90);
+        } catch (Exception e) {
+            System.out.println("Error setting AI NPC ADP: " + e.getMessage());
+        }
     }
 
-    public void setAiNPCAGL(int aiNPCAGL) {
-        this.aiNPCAGL = aiNPCAGL;
+// a function that sets the AI NPC stat AGL to the value passed in the parameter, but only if it is between 10 and 90
+    public void setStatAGL(int aiNPCAGL) {
+        try {
+            this.aiNPCAGL = Math.min(Math.max(aiNPCAGL, 10), 90);
+        } catch (Exception e) {
+            System.out.println("Error setting AI NPC AGL: " + e.getMessage());
+        }
     }
 
-    public void setAiNPCCOM(int aiNPCCOM) {
-        this.aiNPCCOM = aiNPCCOM;
+// a function that sets the AI NPC stat COM to the value passed in the parameter, but only if it is between 10 and 90
+    public void setStatCOM(int aiNPCCOM) {
+        try {
+            this.aiNPCCOM = Math.min(Math.max(aiNPCCOM, 10), 90);
+        } catch (Exception e) {
+            System.out.println("Error setting AI NPC COM: " + e.getMessage());
+        }
     }
+
+// a function that sets the AI NPC stats to the values passed in the parameters, but only if they are between 10 and 90
+    public void setStats(int aiNPCFCT, int aiNPCADP, int aiNPCAGL, int aiNPCCOM) {
+        try {
+            this.aiNPCFCT = Math.min(Math.max(aiNPCFCT, 10), 90);
+            this.aiNPCADP = Math.min(Math.max(aiNPCADP, 10), 90);
+            this.aiNPCAGL = Math.min(Math.max(aiNPCAGL, 10), 90);
+            this.aiNPCCOM = Math.min(Math.max(aiNPCCOM, 10), 90);
+        } catch (Exception e) {
+            System.out.println("Error setting AI NPC stats: " + e.getMessage());
+        }
+    }
+    
+
+    
+    
 
 
 
