@@ -3,7 +3,7 @@ package spaceCthulhu.model.Ships;
 import spaceCthulhu.model.AiNPCModel.AiNPCModel;
 import spaceCthulhu.model.Bays.ModularBayModel;
 import spaceCthulhu.model.enums.EnumBody;
-import spaceCthulhu.model.enums.EnumBody.aiNPC;
+import spaceCthulhu.model.enums.EnumBody.aiRole;
 
 import java.lang.Math;
 
@@ -11,19 +11,27 @@ public class ShipModel {
 
     protected int shipID;
     protected String shipName;
-    protected aiNPC[] aiSlots;
-    protected int passengerSize;
+    protected AiNPCModel[] aiSlots;
+    protected int passengerCapacity;
     protected EnumBody.shipSize shipSize;
     protected EnumBody.shipClass shipClass;
     protected ModularBayModel[] baySlots;
     protected int shipHealth;
     protected int shipShield;
 
+//Constuctors
 
+    //the default constructor
     public ShipModel() {
     }
 
+    //constructor with only shipID and shipName
+    // public ShipModel(int shipID, String shipName) {
+    //     this.shipID = shipID;
+    //     this.shipName = shipName;
+    // }
 
+    //constructor with shipID, shipName, shipSize, and shipClass
     public ShipModel(int shipID, String shipName, EnumBody.shipSize shipSize, EnumBody.shipClass shipClass) {
         this.shipID = shipID;
         this.shipName = shipName;
@@ -32,14 +40,17 @@ public class ShipModel {
         this.baySlots = new ModularBayModel[calculateBaySlots()];
         this.shipHealth = 100;
         this.shipShield = 100;
+        this.passengerCapacity = calculatePassengerSize();
     }
 
+    //constructor with shipID, shipName, shipSize, shipClass, and aiSlots
     public ShipModel(int shipID, String shipName, EnumBody.shipSize shipSize, EnumBody.shipClass shipClass, int aiSlots, int shipHealth, int shipShield) {
         this.shipID = shipID;
         this.shipName = shipName;
         this.shipSize = shipSize;
         this.shipClass = shipClass;
         this.baySlots = new ModularBayModel[calculateBaySlots()];
+        this.passengerCapacity = calculatePassengerSize();
 
         if (shipHealth > 100) {
             this.shipHealth = 100;
@@ -58,6 +69,8 @@ public class ShipModel {
         }
 
     }
+
+//functions
 
     /** a function that takes in the enum shipClass and outputs the number of bays determined by class and size */
     private int calculateBaySlots() {
@@ -86,10 +99,12 @@ public class ShipModel {
             case HEAVY:
                 baySlots *= 3;
                 break;
+            default:
+                break;
         }
         return baySlots;
     }
-
+    //a function that calculates the passenger size based on the ship class and size
     private int calculatePassengerSize() {
         int passengerSize = 0;
 
@@ -128,99 +143,8 @@ public class ShipModel {
         return passengerSize;
     }
 
-    public ShipModel(int shipID, String shipName, int shipHealth, int shipShield, EnumBody.shipSize shipSize, EnumBody.shipClass shipClass) {
-        this.shipID = shipID;
-        this.shipName = shipName;
-        this.shipHealth = shipHealth;
-        this.shipShield = shipShield;
-        this.shipSize = shipSize;
-        this.shipClass = shipClass;
-    }
-    
-    public ShipModel(int shipID, String shipName, int shipHealth, int shipShield, EnumBody.shipSize shipSize) {
-        this.shipID = shipID;
-        this.shipName = shipName;
-        this.shipHealth = shipHealth;
-        this.shipShield = shipShield;
-        this.shipSize = shipSize;
-    }
-
-    public ShipModel(int shipID, String shipName, int shipHealth, int shipShield) {
-        this.shipID = shipID;
-        this.shipName = shipName;
-        this.shipHealth = shipHealth;
-        this.shipShield = shipShield;
-    }
-
-    public ShipModel(int shipID, String shipName, int shipHealth) {
-        this.shipID = shipID;
-        this.shipName = shipName;
-        this.shipHealth = shipHealth;
-    }
-
-    public ShipModel(int shipID, String shipName) {
-        this.shipID = shipID;
-        this.shipName = shipName;
-    }
-
-    public ShipModel(int shipID) {
-        this.shipID = shipID;
-    }
-
-    public ShipModel(String shipName) {
-        this.shipName = shipName;
-    }
-
-    public int getShipID() {
-        return shipID;
-    }
-
-    public String getShipName() {
-        return shipName;
-    }
-
-    public int getShipHealth() {
-        return shipHealth;
-    }
-
-    public int getShipShield() {
-        return shipShield;
-    }
-
-    public EnumBody.shipSize getShipSize() {
-        return shipSize;
-    }
-
-    public int getAiSlots() {
-        return aiSlots.length;
-    }
-
-    public void setShipID(int shipID) {
-        this.shipID = shipID;
-    }
-
-    public void setShipName(String shipName) {
-        this.shipName = shipName;
-    }
-
-    public void setShipHealth(int shipHealth) {
-        this.shipHealth = shipHealth;
-    }
-
-    public void setShipShield(int shipShield) {
-        this.shipShield = shipShield;
-    }
-
-    public void setShipSize(EnumBody.shipSize shipSize) {
-        this.shipSize = shipSize;
-    }
-
-    public void setShipClass(EnumBody.shipClass shipClass) {
-        this.shipClass = shipClass;
-    }
-
-    /** A function that adds an aiNPC to the aiSlots array */
-    public void addAiNPC(aiNPC aiNPC) {
+    //a function that adds an aiNPC to the aiSlots array */
+    public void addAiNPC(AiNPCModel aiNPC) {
         for (int i = 0; i < aiSlots.length; i++) {
             if (aiSlots[i] == null) {
                 aiSlots[i] = aiNPC;
@@ -229,11 +153,11 @@ public class ShipModel {
         }
     }
 
-    //** A function the returns a given aiNPC by aiNPC name from the aiSlots array, wrapped in a try  */
-    public aiNPC getAiNPC(String aiNPCName) {
+    //a function the returns a given aiNPC by aiNPC name from the aiSlots array, wrapped in a try and catch */
+    public AiNPCModel getAiNPC(String aiNPCName) {
         try {
             for (int i = 0; i < aiSlots.length; i++) {
-                if (aiSlots[i].getAiNPCName().equals(aiNPCName)) {
+                if (aiSlots[i].getName().equals(aiNPCName)) {
                     return aiSlots[i];
                 }
             }
@@ -254,11 +178,6 @@ public class ShipModel {
         
     }
 
-    @Override
-    public String toString() {
-        return "ShipModel{" + "shipID=" + shipID + ", shipName=" + shipName + ", shipHealth=" + shipHealth + ", shipShield=" + shipShield + '}';
-    }
-
     /** a function with a try and catch that adds bay children of ModulBayModel to the ship's bayslots if there are available baySlots */
     public void addBay(ModularBayModel bay) {
         try {
@@ -272,6 +191,35 @@ public class ShipModel {
             System.out.println("No more bay slots available");
         }
     }
+
+
+
+//Getters
+    public int getShipID() {
+        return shipID;
+    }
+
+    public String getShipName() {
+        return shipName;
+    }
+
+    public aiNPC[] getAiSlots() {
+        return aiSlots;
+    }
+
+    public int getPassengerSize() {
+        return passengerSize;
+    }
+
+    public EnumBody.shipSize getShipSize() {
+        return shipSize;
+    }
+
+    @Override
+    public String toString() {
+        return "ShipModel{" + "shipID=" + shipID + ", shipName=" + shipName + ", shipHealth=" + shipHealth + ", shipShield=" + shipShield + '}';
+    }
+
 
 
     /** A function that evaluates the shipsize enum and the shipclass enum to determine how many bays ar eavailable */
